@@ -67,6 +67,7 @@ class RegisterController extends GetxController {
       icon = Icons.remove_red_eye;
     }
     update();
+    
   }
 
   @override
