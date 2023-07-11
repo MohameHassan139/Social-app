@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_app/constants/const.dart';
+import 'package:social_app/helper/cashe_helper.dart';
 
 import '../constants/app_routes.dart';
 import '../model/login_model.dart';
@@ -34,6 +35,7 @@ class LoginController extends GetxController {
         isverfied = true;
         update();
       } else {
+        CacheHelper.prefs?.setString('userId', uesrId);
         Get.offNamed(AppRoutes.home);
         toast(msg: 'login sccess', color: Colors.green);
       }
