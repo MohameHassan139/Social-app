@@ -1,8 +1,7 @@
-
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../constants/app_color.dart';
 import '../../constants/app_routes.dart';
@@ -13,8 +12,7 @@ import '../widgets/custom_textformfield.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({key});
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
   var formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -46,7 +44,7 @@ class LoginScreen extends StatelessWidget {
                   prefixIcon: const Icon(Icons.email_outlined),
                   labelText: 'E-mail',
                   hintText: 'E-mail',
-                  textController: emailController,
+                  textController: controller.emailController,
                   validator: (value) {
                     return validInput(value!, 5, 100, 'email');
                   },
@@ -66,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                             },
                             icon: Icon(controller.icon),
                           ),
-                          textController: passwordController,
+                          textController: controller.passwordController,
                           validator: (value) {
                             return validInput(value!, 5, 100, 'password');
                           },
@@ -81,8 +79,8 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () {
                           if (formkey.currentState!.validate()) {
                             controller.onSubmit(
-                              email: emailController.text,
-                              password: passwordController.text,
+                              email: controller.emailController.text,
+                              password: controller.passwordController.text,
                             );
                           }
                         },
@@ -128,7 +126,40 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-               
+                // Spacer(),
+                const SizedBox(
+                  height: 150,
+                ),
+                GetBuilder<LoginController>(
+                  builder: (c) => ConditionalBuilder(
+                    condition: c.isverfied,
+                    builder: (context) => Container(
+                      color: Colors.amber[600],
+                      height: 50,
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          children: [
+                            const Text('verfiay your email '),
+                            const Spacer(),
+                            TextButton(
+                              onPressed: () {
+                                FirebaseAuth.instance.currentUser
+                                    ?.sendEmailVerification();
+                              },
+                              child: const Text(
+                                'send ',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    fallback: (context) => const Text(''),
+                  ),
+                )
               ],
             ),
           ),
@@ -140,6 +171,6 @@ class LoginScreen extends StatelessWidget {
 
 
 
-//    mohamedhassen011@gmail.com
+//    mohamedhessan139@gmail.com
 
-//   123456Q@
+//   mohamedhessan139@gmail.com

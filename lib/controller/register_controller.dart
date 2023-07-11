@@ -38,9 +38,10 @@ class RegisterController extends GetxController {
           .then((value) {
         createUser(userId: FirebaseAuth.instance.currentUser!.uid);
         state = true.obs;
-        print(value.credential?.token);
-        print(value.user?.email);
-        print(value.user?.uid);
+        FirebaseAuth.instance.currentUser?.sendEmailVerification();
+        toast(
+            msg: ' please go to your mail to active your account',
+            color: Colors.green);
       });
     }
   }
@@ -67,7 +68,6 @@ class RegisterController extends GetxController {
       icon = Icons.remove_red_eye;
     }
     update();
-    
   }
 
   @override
