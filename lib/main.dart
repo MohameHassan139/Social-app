@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/constants/app_routes.dart';
+import 'package:social_app/constants/const.dart';
 import 'package:social_app/firebase_options.dart';
 import 'package:social_app/view/screens/login_screen.dart';
 import 'package:social_app/view/screens/register_screen.dart';
@@ -24,7 +25,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       routes: routes,
-      initialRoute: AppRoutes.login,
+      initialRoute:uesrId== null? AppRoutes.login:AppRoutes.home,
     );
   }
 }
+//  mohassen011@gmail.com
