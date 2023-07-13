@@ -1,0 +1,25 @@
+2023/07/08-18:45:24.530 8e4 Reusing MANIFEST C:\Users\MO_HAS~1\AppData\Local\Temp\flutter_tools.a9cf4c85\flutter_tools_chrome_device.9551137d\Default\IndexedDB\http_localhost_49919.indexeddb.leveldb/MANIFEST-000001
+2023/07/08-18:45:24.531 8e4 Recovering log #4
+2023/07/08-18:45:24.532 8e4 Reusing old log C:\Users\MO_HAS~1\AppData\Local\Temp\flutter_tools.a9cf4c85\flutter_tools_chrome_device.9551137d\Default\IndexedDB\http_localhost_49919.indexeddb.leveldb/000004.log 
+2023/07/08-18:45:24.583 8e4 Level-0 table #8: started
+2023/07/08-18:45:24.628 8e4 Level-0 table #8: 1783 bytes OK
+2023/07/08-18:45:24.663 8e4 Delete type=0 #4
+2023/07/08-18:45:24.664 1124 Manual compaction at level-0 from '\x00\x04\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x05\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/07/08-18:49:27.845 10fc Compacting 1@1 + 1@2 files
+2023/07/08-18:49:27.859 10fc Generated table #9@1: 38 keys, 1253 bytes
+2023/07/08-18:49:27.859 10fc Compacted 1@1 + 1@2 files => 1253 bytes
+2023/07/08-18:49:27.882 10fc compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/07/08-18:49:27.883 10fc Delete type=2 #5
+2023/07/08-18:49:27.883 10fc Delete type=2 #8
+2023/07/08-19:35:52.848 10fc Level-0 table #11: started
+2023/07/08-19:35:52.965 10fc Level-0 table #11: 9482 bytes OK
+2023/07/08-19:35:53.043 10fc Delete type=0 #7
+2023/07/08-19:35:53.045 10fc Manual compaction at level-0 from (begin) .. (end); will stop at (end)
+2023/07/08-19:35:53.048 10fc Manual compaction at level-1 from (begin) .. (end); will stop at '\x00\x03\x01\x02\x013\x00[\x00D\x00E\x00F\x00A\x00U\x00L\x00T\x00]\x00!\x001\x00:\x004\x008\x007\x002\x009\x000\x006\x000\x000\x001\x009\x009\x00:\x00w\x00e\x00b\x00:\x009\x00d\x004\x002\x00c\x008\x001\x001\x00e\x002\x00b\x005\x007\x005\x000\x00f\x000\x00d\x00e\x003\x00a\x002' @ 167 : 1
+2023/07/08-19:35:53.048 10fc Compacting 1@1 + 1@2 files
+2023/07/08-19:35:53.072 10fc Generated table #12@1: 36 keys, 2859 bytes
+2023/07/08-19:35:53.072 10fc Compacted 1@1 + 1@2 files => 2859 bytes
+2023/07/08-19:35:53.102 10fc compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/07/08-19:35:53.113 10fc Delete type=2 #9
+2023/07/08-19:35:53.113 10fc Delete type=2 #11
+2023/07/08-19:35:53.119 10fc Manual compaction at level-1 from '\x00\x03\x01\x02\x013\x00[\x00D\x00E\x00F\x00A\x00U\x00L\x00T\x00]\x00!\x001\x00:\x004\x008\x007\x002\x009\x000\x006\x000\x000\x001\x009\x009\x00:\x00w\x00e\x00b\x00:\x009\x00d\x004\x002\x00c\x008\x001\x001\x00e\x002\x00b\x005\x007\x005\x000\x00f\x000\x00d\x00e\x003\x00a\x002' @ 167 : 1 .. (end); will stop at (end)
