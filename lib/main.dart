@@ -8,6 +8,9 @@ import 'package:social_app/view/screens/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
+import 'constants/them/dark_mode.dart';
+import 'constants/them/light_mode.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   CacheHelper.init();
@@ -24,10 +27,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
+      theme: lightThem(),
+      darkTheme: darktThem() ,
+      themeMode: ThemeMode.light,
+      // themeMode: ThemeMode.dark,
+
       routes: routes,
+      // initialRoute: AppRoutes.login,
       initialRoute: uesrId == null ? AppRoutes.login : AppRoutes.home,
     );
   }

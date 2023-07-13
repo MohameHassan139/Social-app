@@ -1,16 +1,16 @@
+
+
 import 'package:flutter/material.dart';
 
-class UserScreen extends StatelessWidget {
-  const UserScreen({key});
+class PostScreen extends StatelessWidget {
+  const PostScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
+    return Center(
           child: Text(
-        'User Screen',
+        'Post Screen',
         style: TextStyle(fontSize: 30),
-      ),),
-    );
+      ),);
   }
 }

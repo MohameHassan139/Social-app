@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_app/constants/const.dart';
 import 'package:social_app/helper/cashe_helper.dart';
 
 import '../constants/app_routes.dart';
-import '../model/login_model.dart';
-import '../view/screens/home_screen.dart';
-import '../view/screens/home_screen.dart';
 import '../view/widgets/toast.dart';
 
 class LoginController extends GetxController {
