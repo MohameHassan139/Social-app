@@ -17,25 +17,32 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-   MyApp({key});
-  String? uesrId=CacheHelper.prefs?.getString('userId');
+  MyApp({key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    String? uesrId = CacheHelper.prefs?.getString('userId');
+    print(uesrId);
+
+    print('#######################################');
+
     return GetMaterialApp(
       theme: lightThem(),
-      darkTheme: darktThem() ,
+      darkTheme: darktThem(),
       themeMode: ThemeMode.light,
       // themeMode: ThemeMode.dark,
 
       routes: routes,
-      // initialRoute: AppRoutes.login,
+      // initialRoute: AppRoutes.home,
       initialRoute: uesrId == null ? AppRoutes.login : AppRoutes.home,
     );
   }
 }
 //  mohassen011@gmail.com
+//    mohamedhessan139@gmail.com
+// 123456@Aa

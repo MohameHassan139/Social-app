@@ -14,6 +14,8 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   bool isPassword = true;
   IconData icon = Icons.remove_red_eye;
+  String? uesrId;
+
   Future onSubmit({
     required String email,
     required String password,
@@ -31,7 +33,7 @@ class LoginController extends GetxController {
         isverfied = true;
         update();
       } else {
-        CacheHelper.prefs?.setString('userId', uesrId);
+        CacheHelper.prefs?.setString('userId', uesrId!);
         Get.offNamed(AppRoutes.home);
         toast(msg: 'login sccess', color: Colors.green);
       }

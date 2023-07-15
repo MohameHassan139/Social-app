@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_app/constants/const.dart';
 import '../constants/app_routes.dart';
+import '../helper/cashe_helper.dart';
 import '../model/user_model.dart';
 import '../view/widgets/toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,6 +18,7 @@ class RegisterController extends GetxController {
   DateTime? selectedDate;
   late CollectionReference users;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  String? uesrId = CacheHelper.prefs?.getString('userId');
 
   RxBool state = true.obs;
   bool isPassword = true;
@@ -42,13 +44,12 @@ class RegisterController extends GetxController {
         String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
         model = UserDataModel(
           email: emailTextController.text,
-          username: nameTextController.text,
-          uId: uesrId,
+          name: nameTextController.text,
+          uId: uesrId!,
           image:
               'https://th.bing.com/th/id/R.b9941d2d7120044bd1d8e91c5556c131?rik=sDJfLfGGErT9Fg&pid=ImgRaw&r=0',
-          token: token!,
         );
-        createUser(userId: FirebaseAuth.instance.currentUser!.uid);
+        createUser(map: model);
         state = true.obs;
         FirebaseAuth.instance.currentUser?.sendEmailVerification();
         toast(
@@ -58,13 +59,11 @@ class RegisterController extends GetxController {
     }
   }
 
-  createUser({required String userId}) {
-    FirebaseFirestore.instance.collection('users').doc(userId).set({
-      'name': nameTextController.text,
-      'email': emailTextController.text,
-      'phone': phoneTextController.text,
-      'password': passwordTextController.text
-    });
+  createUser({UserDataModel? map}) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(map!.uId)
+        .set(map.toJson());
   }
 
   goToLogin() {

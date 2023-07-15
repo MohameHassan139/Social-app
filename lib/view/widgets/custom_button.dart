@@ -35,7 +35,7 @@ class CustomButton extends StatelessWidget {
               bottom: paddingButtom ?? 0,
               left: paddingLeft ?? 0,
               right: paddingRight ?? 0),
-          height: 32,
+          height: 40,
           decoration: BoxDecoration(
             // border: Border.all(color: AppColor.borderColor),
             color: colorButton == null ? AppColor.buttonColor : colorButton,

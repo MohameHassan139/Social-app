@@ -1,33 +1,37 @@
 class UserDataModel {
   UserDataModel({
     required this.uId,
-    required this.username,
+    required this.name,
     required this.email,
-    required this.token,
     required this.image,
+    this.bio,
   });
 
   late final String uId;
-  late final String username;
+  late final String name;
   late final String email;
-  late final String token;
   late final String image;
+  String? bio = 'write a bio';
+  String caver =
+      'https://th.bing.com/th/id/OIP.xntKTqP9pZbOAnyJwf9SdAAAAA?pid=ImgDet&rs=1';
 
   UserDataModel.fromJson(Map<String, dynamic> json) {
     uId = json['uId'] ?? '';
-    username = json['username'] ?? '';
+    name = json['name'] ?? '';
     email = json['email'] ?? '';
-    token = json['token'] ?? '';
     image = json['image'] ?? '';
+    bio = json['bio'] ?? '';
+    caver = json['caver'];
   }
 
   Map<String, dynamic> toJson() {
     return {
       'uId': uId,
-      'username': username,
+      'name': name,
       'email': email,
-      'token': token,
       'image': image,
+      'bio': bio,
+      'caver': caver,
     };
   }
 }
