@@ -1,3 +1,6 @@
+// import 'package:flutter/material.dart';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/them/app_color.dart';
@@ -40,7 +43,7 @@ class CustomTextFormField extends StatelessWidget {
         obscureText: ispassword ?? false,
         controller: textController,
         readOnly: readOnly ?? false,
-        decoration: InputDecoration(
+        decoration:  InputDecoration(
           // suffix: suffix,
           suffixIcon: suffix,
           fillColor: Colors.white,
@@ -133,14 +136,11 @@ class CustomTextFormField1 extends StatelessWidget {
         obscureText: ispassword ?? false,
         controller: textController,
         readOnly: readOnly ?? false,
-        decoration: InputDecoration(
-          // suffix: suffix,
+      decoration:   InputDecoration(
           suffixIcon: suffix,
           fillColor: Colors.white,
           filled: true,
-          // contentPadding: const EdgeInsets.only(left: 10),
-          // border: InputBorder.none,
-          // labelText: labelText,
+         
           prefixIcon: prefixIcon,
           hintText: '$hintText',
           hintStyle: const TextStyle(
@@ -158,3 +158,18 @@ class CustomTextFormField1 extends StatelessWidget {
     );
   }
 }
+// InputDecoration(
+//           // suffix: suffix,
+//           suffixIcon: suffix,
+//           fillColor: Colors.white,
+//           filled: true,
+//           // contentPadding: const EdgeInsets.only(left: 10),
+//           // border: InputBorder.none,
+//           // labelText: labelText,
+//           prefixIcon: prefixIcon,
+//           hintText: '$hintText',
+//           hintStyle: const TextStyle(
+//             fontWeight: FontWeight.w400,
+//             color: AppColor.hintTextColor,
+//           ),
+//         ),

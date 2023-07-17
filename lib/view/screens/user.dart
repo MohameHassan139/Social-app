@@ -11,22 +11,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserScreen extends StatelessWidget {
   UserScreen({key});
-  // BottonNavController controller = Get.put(BottonNavController());
   late UserDataModel model;
   CollectionReference users = FirebaseFirestore.instance.collection('users');
   String? uesrId = CacheHelper.prefs?.getString('userId');
   @override
   Widget build(BuildContext context) {
     // return Text('data');
-    return FutureBuilder<DocumentSnapshot>(
-      future: users.doc(uesrId).get(),
+    return StreamBuilder<DocumentSnapshot>(
+      stream: users.doc(uesrId).snapshots(),
+
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.hasData) {
+          
           model = UserDataModel.fromJson(
               snapshot.data!.data() as Map<String, dynamic>);
-          print(model.email);
-          print(model.name);
-          print('#######################################');
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -190,27 +188,26 @@ class UserScreen extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  
                   children: [
                     Expanded(
                       child: SizedBox(
-                      height: 35,
+                        height: 35,
                         child: OutlinedButton(
                           onPressed: () {},
-                          child: const Text('EDITE PROFILR'),
+                          child: const Text('ADD PHOTO'),
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     SizedBox(
                       height: 35,
                       child: OutlinedButton(
-                        
                         onPressed: () {},
-                        child:const Icon(Icons.edit),
+                        child: const Icon(Icons.edit),
                       ),
                     ),
-                    
                   ],
                 ),
                 // CustomButton(
@@ -234,6 +231,9 @@ class UserScreen extends StatelessWidget {
           child: CircularProgressIndicator(),
         );
       },
+    
+      
+    
     );
   }
 }
