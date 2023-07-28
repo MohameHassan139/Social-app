@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/constants/app_routes.dart';
-import 'package:social_app/constants/const.dart';
 import 'package:social_app/firebase_options.dart';
 import 'package:social_app/helper/cashe_helper.dart';
-import 'package:social_app/view/screens/login_screen.dart';
-import 'package:social_app/view/screens/register_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
-
 import 'constants/them/dark_mode.dart';
 import 'constants/them/light_mode.dart';
 
@@ -40,6 +36,7 @@ class MyApp extends StatelessWidget {
       routes: routes,
       // initialRoute: AppRoutes.home,
       initialRoute: uesrId == null ? AppRoutes.login : AppRoutes.home,
+      // initialRoute: AppRoutes.editeProfile,
     );
   }
 }

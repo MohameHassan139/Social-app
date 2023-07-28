@@ -1,6 +1,3 @@
-// import 'package:flutter/material.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/them/app_color.dart';
@@ -48,9 +45,6 @@ class CustomTextFormField extends StatelessWidget {
           suffixIcon: suffix,
           fillColor: Colors.white,
           filled: true,
-          // contentPadding: const EdgeInsets.only(left: 10),
-          // border: InputBorder.none,
-          // labelText: labelText,
           prefixIcon: prefixIcon,
           hintText: '$hintText',
           hintStyle: const TextStyle(
@@ -117,17 +111,6 @@ class CustomTextFormField1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: const EdgeInsets.fromLTRB(0, 0, 0, 16),
-      // padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      // width: double.infinity,
-      // height: 40,
-      // decoration: BoxDecoration(
-      //   border: Border.all(
-      //     color: AppColor.borderColor,
-      //   ),
-      // color: const Color(0xffffffff),
-      // borderRadius: BorderRadius.circular(10),
-      // ),
       child: TextFormField(
         onTap: onTap,
         keyboardType: fieldType,
@@ -158,18 +141,3 @@ class CustomTextFormField1 extends StatelessWidget {
     );
   }
 }
-// InputDecoration(
-//           // suffix: suffix,
-//           suffixIcon: suffix,
-//           fillColor: Colors.white,
-//           filled: true,
-//           // contentPadding: const EdgeInsets.only(left: 10),
-//           // border: InputBorder.none,
-//           // labelText: labelText,
-//           prefixIcon: prefixIcon,
-//           hintText: '$hintText',
-//           hintStyle: const TextStyle(
-//             fontWeight: FontWeight.w400,
-//             color: AppColor.hintTextColor,
-//           ),
-//         ),

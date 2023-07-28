@@ -40,11 +40,4 @@ class BottonNavController extends GetxController {
       currentIndex = index;
     update();
   }
-
-  // void getUserData() {
-  //   users.doc(uesrId).get();
-  //   print(users.get());
-  //   print('####################################');
-  //   // model = UserDataModel.fromJson( );
-  // }
 }

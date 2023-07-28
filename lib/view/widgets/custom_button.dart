@@ -29,7 +29,6 @@ class CustomButton extends StatelessWidget {
           padding: EdgeInsets.zero,
         ),
         child: Container(
-          // padding: const EdgeInsets.all(6),
           padding: EdgeInsets.only(
               top: paddingTop ?? 0,
               bottom: paddingButtom ?? 0,
@@ -37,7 +36,6 @@ class CustomButton extends StatelessWidget {
               right: paddingRight ?? 0),
           height: 40,
           decoration: BoxDecoration(
-            // border: Border.all(color: AppColor.borderColor),
             color: colorButton == null ? AppColor.buttonColor : colorButton,
             borderRadius: BorderRadius.circular(5),
           ),
