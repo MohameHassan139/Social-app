@@ -1,23 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:social_app/constants/app_routes.dart';
-import 'package:social_app/constants/const.dart';
 import 'package:social_app/view/screens/chats.dart';
 import 'package:social_app/view/screens/feeds.dart';
+import '../helper/cashe_helper.dart';
 import '../model/user_model.dart';
-
-import '../view/screens/home_screen.dart';
 import '../view/screens/post_screen.dart';
+import '../view/screens/profile.dart';
 import '../view/screens/setting.dart';
-import '../view/screens/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BottonNavController extends GetxController {
-  int currentIndex = 3;
-
+  int currentIndex = 0;
 
   List<String> title = [
     'Home',
@@ -29,8 +24,8 @@ class BottonNavController extends GetxController {
   List<Widget> screens = [
     const FeedsScreen(),
     const ChatScreen(),
-    const PostScreen(),
-     UserScreen(),
+    PostScreen(),
+    ProfileScreen(),
     const SettingScreen(),
   ];
   void chanageBottomNavBar(int index) {
@@ -39,5 +34,20 @@ class BottonNavController extends GetxController {
     } else
       currentIndex = index;
     update();
+  }
+
+  @override
+  void onInit() {
+    UserDataModel userModel = UserDataModel();
+    String? uesrId = CacheHelper.prefs?.getString('userId');
+    var users = FirebaseFirestore.instance.collection('users');
+    var doc = users.doc(uesrId);
+    doc.get().then((value) {
+      userModel = UserDataModel.fromJson(value.data() as Map<String, dynamic>);
+      print('get user data');
+      update();
+    });
+
+    super.onInit();
   }
 }

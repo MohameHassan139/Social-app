@@ -6,13 +6,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'constants/them/dark_mode.dart';
 import 'constants/them/light_mode.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   CacheHelper.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MyApp());
 }
 
@@ -42,4 +42,4 @@ class MyApp extends StatelessWidget {
 }
 //  mohassen011@gmail.com
 //    mohamedhessan139@gmail.com
-// 123456@Aa
+// 123456@Aa 

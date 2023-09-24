@@ -22,18 +22,19 @@ ThemeData darktThem() {
       ),
     ),
     textTheme: TextTheme(
-      caption:TextStyle(color: Colors.grey[350]),
-      subtitle1: TextStyle(
+      headlineSmall: TextStyle(color: Colors.grey[350]),
+      bodySmall:TextStyle(color: Colors.grey[350]),
+      titleMedium: const TextStyle(
         color: Colors.white,
         fontSize: 16,
       ),
-      bodyText1: TextStyle(
+      bodyLarge: const TextStyle(
         color: Colors.white,
         fontSize: 18,
         fontWeight: FontWeight.w600,
       ),
     ),
-    scaffoldBackgroundColor: Colors.black87,
+    scaffoldBackgroundColor: const Color.fromARGB(241, 2, 5, 23),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
       type: BottomNavigationBarType.fixed,
@@ -47,8 +48,13 @@ ThemeData darktThem() {
       unselectedLabelStyle: TextStyle(color: Colors.white) ,
       elevation: 20,
     ),
-    cardTheme: CardTheme(color: Colors.black,),
+    cardTheme: const CardTheme(color: Colors.black,),
     iconTheme:IconThemeData(color: Colors.grey[350],) ,
+    outlinedButtonTheme:  const OutlinedButtonThemeData(
+      style: ButtonStyle(
+        foregroundColor: MaterialStatePropertyAll(Colors.green),
+      )
+    )
   );
   
 }

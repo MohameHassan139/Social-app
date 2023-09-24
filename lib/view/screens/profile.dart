@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/constants/app_routes.dart';
-import 'package:social_app/constants/const.dart';
-
-import '../../controller/home_controller.dart';
-import '../../controller/setting_controller.dart';
-import '../../helper/cashe_helper.dart';
+import '../../controller/profile_controller.dart';
 import '../../model/user_model.dart';
-import '../widgets/custom_button.dart';
 import 'package:get/get.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserScreen extends StatelessWidget {
-  UserScreen({key});
-  SettingController controller = Get.put(SettingController());
+// import 'edit_profile_screen.dart';
+
+
+class ProfileScreen extends StatelessWidget {
+  ProfileScreen({key});
+  profileController controller = Get.put(profileController());
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: controller.doc?.snapshots(),
+      stream: controller.doc.snapshots(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           controller.model = UserDataModel.fromJson(
@@ -40,7 +37,7 @@ class UserScreen extends StatelessWidget {
                           height: 140,
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(5),
                               topRight: Radius.circular(5),
                             ),
@@ -79,7 +76,7 @@ class UserScreen extends StatelessWidget {
                   '${controller.model.name}',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 7,
                 ),
                 // bio
@@ -105,7 +102,7 @@ class UserScreen extends StatelessWidget {
                                 '100',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
-                              SizedBox(
+                                const SizedBox(
                                 height: 7,
                               ),
                               Text(
@@ -127,7 +124,7 @@ class UserScreen extends StatelessWidget {
                                 '100',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 7,
                               ),
                               Text(
@@ -149,7 +146,7 @@ class UserScreen extends StatelessWidget {
                                 '100',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 7,
                               ),
                               Text(
@@ -171,7 +168,7 @@ class UserScreen extends StatelessWidget {
                                 '100',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 7,
                               ),
                               Text(
@@ -203,7 +200,9 @@ class UserScreen extends StatelessWidget {
                       height: 35,
                       child: OutlinedButton(
                         onPressed: () {
+
                           Get.toNamed(AppRoutes.editeProfile);
+                          // Get.to(() =>EditeProfile());
                         },
                         child: const Icon(Icons.edit),
                       ),
@@ -215,11 +214,11 @@ class UserScreen extends StatelessWidget {
           );
         }
         if (snapshot.hasError) {
-          return Text("Something went wrong");
+          return const Text("Something went wrong");
         }
 
         if (snapshot.hasData && !snapshot.data!.exists) {
-          return Text("Document does not exist");
+          return const Text("Document does not exist");
         }
         return const Center(
           child: CircularProgressIndicator(),

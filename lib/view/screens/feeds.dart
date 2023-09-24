@@ -31,7 +31,7 @@ class FeedsScreen extends StatelessWidget {
                   'communcation with friends',
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle1
+                      .titleMedium
                       ?.copyWith(color: Colors.white),
                 ),
               ),

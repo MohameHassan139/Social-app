@@ -35,12 +35,12 @@ class LoginController extends GetxController {
       } else {
         CacheHelper.prefs?.setString('userId', uesrId!);
         Get.offNamed(AppRoutes.home);
-        toast(msg: 'login sccess', color: Colors.green);
+        // toast(msg: 'login sccess', color: Colors.green);
       }
       update();
     }).catchError((error) {
       state = true.obs;
-      toast(msg: error.toString(), color: Colors.red);
+      // toast(msg: error.toString(), color: Colors.red);
       update();
       print(error.toString());
     });

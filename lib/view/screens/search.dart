@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class SreachScreen extends StatelessWidget {
   const SreachScreen({key});
 
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
