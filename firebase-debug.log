@@ -1,0 +1,20 @@
+[debug] [2023-07-29T19:38:21.768Z] ----------------------------------------------------------------------
+[debug] [2023-07-29T19:38:21.776Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Mo_Hassan\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js apps:create android social_app (android) --package-name=com.example.social_app --json --project=learn-c2ce0
+[debug] [2023-07-29T19:38:21.777Z] CLI Version:   12.4.0
+[debug] [2023-07-29T19:38:21.779Z] Platform:      win32
+[debug] [2023-07-29T19:38:21.780Z] Node Version:  v18.16.1
+[debug] [2023-07-29T19:38:21.782Z] Time:          Sat Jul 29 2023 21:38:21 GMT+0200 (Eastern European Standard Time)
+[debug] [2023-07-29T19:38:21.783Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-07-29T19:38:21.812Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-07-29T19:38:21.816Z] > authorizing via signed-in user (mohamedhessan139@gmail.com)
+[info] Create your ANDROID app in project learn-c2ce0:
+[debug] [2023-07-29T19:38:21.831Z] >>> [apiv2][query] POST https://firebase.googleapis.com/v1beta1/projects/learn-c2ce0/androidApps [none]
+[debug] [2023-07-29T19:38:21.832Z] >>> [apiv2][body] POST https://firebase.googleapis.com/v1beta1/projects/learn-c2ce0/androidApps {"displayName":"social_app (android)","packageName":"com.example.social_app"}
+[debug] [2023-07-29T19:38:36.834Z] Timeout reached making request to https://firebase.googleapis.com/v1beta1/projects/learn-c2ce0/androidApps
+[debug] [2023-07-29T19:38:41.887Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\Mo_Hassan\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7)
+[error] 
+[error] Error: An unexpected error has occurred.
