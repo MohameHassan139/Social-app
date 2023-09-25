@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../model/user_model.dart';
 
 class PostScreen extends StatefulWidget {
-   PostScreen({Key? key}) : super(key: key);
+  PostScreen({Key? key}) : super(key: key);
 
   @override
   State<PostScreen> createState() => _PostScreenState();
@@ -10,11 +10,13 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen> {
   UserDataModel userModel = UserDataModel();
-@override
+  @override
   void initState() {
-    //  UserDataModel userModel = UserDataModel();
+    print('@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    print(userModel.name);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +28,7 @@ class _PostScreenState extends State<PostScreen> {
             onPressed: () {
               // TODO
             },
-            child: Text('Post'),
+            child: const Text('Post'),
           ),
         ],
       ),
@@ -38,26 +40,21 @@ class _PostScreenState extends State<PostScreen> {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(userModel.image!),
+                  backgroundImage: NetworkImage('${userModel.image!}'),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                   child: Text(
-                    userModel.name!,
-                    style:
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
+                    '${userModel.name!}',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                 ),
-                
-               
               ],
             ),
-
-              
             const Expanded(
               child: TextField(
                 decoration: InputDecoration(
@@ -70,23 +67,26 @@ class _PostScreenState extends State<PostScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                TextButton(onPressed: (){
-                  // TODO
-                }, child: const Row(
-                  children: [
-                    Icon(Icons.image_rounded),
-                    SizedBox(width: 5,),
-                    Text('Add Picture')
-                  ],
-                ),),
-                 TextButton(
+                TextButton(
                   onPressed: () {
                     // TODO
-                    setState(() {
-                      
-                    });
                   },
-                  child:const Text('# Add Tag'),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.image_rounded),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('Add Picture')
+                    ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    // TODO
+                    setState(() {});
+                  },
+                  child: const Text('# Add Tag'),
                 ),
               ],
             )

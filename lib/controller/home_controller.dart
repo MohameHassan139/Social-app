@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BottonNavController extends GetxController {
   int currentIndex = 0;
+  //
 
   List<String> title = [
     'Home',
@@ -38,13 +39,19 @@ class BottonNavController extends GetxController {
 
   @override
   void onInit() {
-    UserDataModel userModel = UserDataModel();
+    UserDataModel userDataModel = UserDataModel();
     String? uesrId = CacheHelper.prefs?.getString('userId');
     var users = FirebaseFirestore.instance.collection('users');
     var doc = users.doc(uesrId);
     doc.get().then((value) {
-      userModel = UserDataModel.fromJson(value.data() as Map<String, dynamic>);
+      UserDataModel userModel =
+          UserDataModel.fromJson(value.data() as Map<String, dynamic>);
       print('get user data');
+      userDataModel.name = userModel.name;
+      userDataModel.bio = userModel.bio;
+      userDataModel.image = userModel.image;
+      userDataModel.caver = userModel.caver;
+      userDataModel.email = userModel.email;
       update();
     });
 
