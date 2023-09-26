@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/controller/create_post_controller.dart';
 import '../../model/user_model.dart';
+import 'package:get/get.dart';
 
-class PostScreen extends StatefulWidget {
-  PostScreen({Key? key}) : super(key: key);
-
-  @override
-  State<PostScreen> createState() => _PostScreenState();
-}
-
-class _PostScreenState extends State<PostScreen> {
+class CreatePostScreen extends StatelessWidget {
   UserDataModel userModel = UserDataModel();
-  @override
-  void initState() {
-    print('@@@@@@@@@@@@@@@@@@@@@@@@@@');
-    print(userModel.name);
-    super.initState();
-  }
 
+  CreatePostController controller = Get.put(CreatePostController());
+
+  CreatePostScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Post',
-            style: Theme.of(context).textTheme.headlineSmall),
+        title: Text(
+          'Create Post',
+          style: Theme.of(context).textTheme.headlineSmall,
+        ),
         actions: [
           TextButton(
             onPressed: () {
-              // TODO
+              controller.addPost(
+                dateTime: DateTime.now().toString(),
+                name: userModel.name,
+                text: controller.postController.text,
+                uesrId: controller.uesrId,
+                image: userModel.image,
+              );
             },
             child: const Text('Post'),
           ),
@@ -34,63 +34,109 @@ class _PostScreenState extends State<PostScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage: NetworkImage('${userModel.image!}'),
-                ),
+        child: GetBuilder<CreatePostController>(
+          builder: (c) => Column(
+            children: [
+               if (c.uploading) const LinearProgressIndicator(),
+              if (c.uploading)
                 const SizedBox(
-                  width: 10,
+                  height: 10,
                 ),
-                Expanded(
-                  child: Text(
-                    '${userModel.name!}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage: NetworkImage('${userModel.image!}'),
                   ),
-                ),
-              ],
-            ),
-            const Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'whate is in your mind',
-                  border: InputBorder.none,
-                ),
-                maxLines: 100,
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Text(
+                      '${userModel.name!}',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    // TODO
-                  },
-                  child: const Row(
+               Expanded(
+                child: TextField(
+
+                  controller: controller.postController   ,
+                  decoration:const InputDecoration(
+                    hintText: 'whate is in your mind',
+                    border: InputBorder.none,
+                  ),
+                  maxLines: 100,
+                ),
+              ),
+              if (controller.postImage != null)
+                Align(
+                  alignment: AlignmentDirectional.topCenter,
+                  child: Stack(
+                    alignment: AlignmentDirectional.topEnd,
                     children: [
-                      Icon(Icons.image_rounded),
-                      SizedBox(
-                        width: 5,
+                      Container(
+                        height: 140,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            topRight: Radius.circular(5),
+                          ),
+                          image: DecorationImage(
+                            image: FileImage(controller.postImage!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                      Text('Add Picture')
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: CircleAvatar(
+                          radius: 20,
+                          child: IconButton(
+                            onPressed: () {
+                              controller.removePostImage();
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    // TODO
-                    setState(() {});
-                  },
-                  child: const Text('# Add Tag'),
-                ),
-              ],
-            )
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      controller.getpostImage();
+                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.image_rounded),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('Add Picture')
+                      ],
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      // TODO
+                    },
+                    child: const Text('# Add Tag'),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

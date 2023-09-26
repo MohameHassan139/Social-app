@@ -25,7 +25,7 @@ class BottonNavController extends GetxController {
   List<Widget> screens = [
     const FeedsScreen(),
     const ChatScreen(),
-    PostScreen(),
+    CreatePostScreen(),
     ProfileScreen(),
     const SettingScreen(),
   ];

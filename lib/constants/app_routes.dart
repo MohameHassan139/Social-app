@@ -23,7 +23,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   AppRoutes.login: (context) => LoginScreen(),
   AppRoutes.register: (context) => RegisterScreen(),
   AppRoutes.home: (context) => HomeScreen(),
-  AppRoutes.post: (context) => PostScreen(),
+  AppRoutes.post: (context) => CreatePostScreen(),
   AppRoutes.editeProfile: (context) => EditeProfile(),
   AppRoutes.Profile: (context) => ProfileScreen(),
 };

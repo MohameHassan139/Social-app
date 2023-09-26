@@ -7,25 +7,28 @@ class PostModel {
   String? name;
 
   String? image;
+  String? postImage;
   String? text;
   String? uesrId;
-  String? datetime;
+  String? dateTime;
 
   PostModel.fromJson(Map<String, dynamic> json) {
     name = json['name'] ?? '';
-    image = json['image'] ;
-    text = json['text']??'' ;
-    datetime = json['datetime'] ?? '';
-    uesrId = json['uesrId'] ?? '';
+    image = json['image'];
+    text = json['text'] ?? '';
+    dateTime = json['datetime'] ;
+    uesrId = json['uesrId'] ;
+    uesrId = json['postImage'] ;
   }
 
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'image': image ,
+      'image': image,
       'text': text,
       'uesrId': uesrId,
-      'datetime': datetime,
+      'dateTime': dateTime,
+      'postImage': postImage,
     };
   }
 }

@@ -71,7 +71,7 @@ class profileController extends GetxController {
   }
 
   Future<void> uploadcoverImage() async {
-    if (profileImage != null) {
+    if (backgroundImage != null) {
       try {
         await storage
             .ref()
