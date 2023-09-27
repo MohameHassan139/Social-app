@@ -1,3 +1,4 @@
+
 class PostModel {
   PostModel({
     this.name,
@@ -16,9 +17,9 @@ class PostModel {
     name = json['name'] ?? '';
     image = json['image'];
     text = json['text'] ?? '';
-    dateTime = json['datetime'] ;
-    uesrId = json['uesrId'] ;
-    uesrId = json['postImage'] ;
+    dateTime = json['dateTime'];
+    uesrId = json['uesrId'];
+    postImage = json['postImage'];
   }
 
   Map<String, dynamic> toJson() {

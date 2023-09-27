@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:social_app/constants/them/app_color.dart';
@@ -29,7 +30,11 @@ class HomeScreen extends StatelessWidget {
           ],
           title: Text(controller.title[controller.currentIndex]),
         ),
-        body: controller.screens[controller.currentIndex],
+        
+        body: 
+        !controller.stateGetUserData?
+        controller.screens[controller.currentIndex]:Center(child: CupertinoActivityIndicator(radius: 15),),
+
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(

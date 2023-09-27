@@ -91,6 +91,7 @@ class CreatePostController extends GetxController {
         'uesrId': uesrId,
         'dateTime': dateTime,
         'image': image,
+        'postImage': null,
       }).then((value) {
         uploading = false;
         update();
