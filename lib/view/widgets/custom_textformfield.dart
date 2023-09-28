@@ -32,7 +32,9 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      
       child: TextFormField(
+        
         onTap: onTap,
         keyboardType: fieldType,
         validator: validator,
@@ -43,7 +45,7 @@ class CustomTextFormField extends StatelessWidget {
         decoration:  InputDecoration(
           // suffix: suffix,
           suffixIcon: suffix,
-          fillColor: Colors.white,
+          fillColor: Color.fromARGB(49, 255, 255, 255),
           filled: true,
           prefixIcon: prefixIcon,
           hintText: '$hintText',

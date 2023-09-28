@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:social_app/constants/them/app_color.dart';
+import 'package:social_app/view/widgets/custom_textformfield.dart';
 
 ThemeData darktThem() {
   return ThemeData(
+    
     primarySwatch: Colors.green,
     appBarTheme: const AppBarTheme(
       iconTheme: IconThemeData(
@@ -22,6 +24,7 @@ ThemeData darktThem() {
       ),
     ),
     textTheme: TextTheme(
+
       headlineSmall: TextStyle(color: Colors.grey[350]),
       bodySmall:TextStyle(color: Colors.grey[350]),
       titleMedium: const TextStyle(
@@ -48,13 +51,14 @@ ThemeData darktThem() {
       unselectedLabelStyle: TextStyle(color: Colors.white) ,
       elevation: 20,
     ),
-    cardTheme: const CardTheme(color: Colors.black,),
+    cardTheme: const CardTheme(color: Color.fromARGB(255, 8, 4, 15),),
     iconTheme:IconThemeData(color: Colors.grey[350],) ,
     outlinedButtonTheme:  const OutlinedButtonThemeData(
       style: ButtonStyle(
         foregroundColor: MaterialStatePropertyAll(Colors.green),
       )
-    )
+    ),
+    
   );
   
 }

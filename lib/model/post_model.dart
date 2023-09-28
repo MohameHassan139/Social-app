@@ -1,4 +1,3 @@
-
 class PostModel {
   PostModel({
     this.name,
@@ -12,8 +11,13 @@ class PostModel {
   String? text;
   String? uesrId;
   String? dateTime;
+  String? postId;
+  int? numLikes;
 
-  PostModel.fromJson(Map<String, dynamic> json) {
+  PostModel.fromJson(
+      {required Map<String, dynamic> json,
+      required String this.postId,
+      required int this.numLikes}) {
     name = json['name'] ?? '';
     image = json['image'];
     text = json['text'] ?? '';

@@ -20,13 +20,19 @@ class CreatePostScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              controller.addPost(
+              controller
+                  .addPost(
                 dateTime: DateTime.now().toString(),
                 name: userModel.name,
                 text: controller.postController.text,
                 uesrId: controller.uesrId,
                 image: userModel.image,
-              );
+              )
+                  .then((value) {
+                controller.removePostImage();
+                controller.postController.clear();
+                controller.postUrl = null;
+              });
             },
             child: const Text('Post'),
           ),
@@ -37,7 +43,7 @@ class CreatePostScreen extends StatelessWidget {
         child: GetBuilder<CreatePostController>(
           builder: (c) => Column(
             children: [
-               if (c.uploading) const LinearProgressIndicator(),
+              if (c.uploading) const LinearProgressIndicator(),
               if (c.uploading)
                 const SizedBox(
                   height: 10,
@@ -61,11 +67,10 @@ class CreatePostScreen extends StatelessWidget {
                   ),
                 ],
               ),
-               Expanded(
+              Expanded(
                 child: TextField(
-
-                  controller: controller.postController   ,
-                  decoration:const InputDecoration(
+                  controller: controller.postController,
+                  decoration: const InputDecoration(
                     hintText: 'whate is in your mind',
                     border: InputBorder.none,
                   ),

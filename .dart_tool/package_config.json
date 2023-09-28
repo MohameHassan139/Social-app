@@ -380,6 +380,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "shimmer",
+      "rootUri": "file:///C:/Users/Mohamed%20Hassan/AppData/Local/Pub/Cache/hosted/pub.dev/shimmer-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///C:/src/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -464,7 +470,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2023-09-26T05:02:46.867084Z",
+  "generated": "2023-09-27T20:10:54.854140Z",
   "generator": "pub",
   "generatorVersion": "3.1.1"
 }

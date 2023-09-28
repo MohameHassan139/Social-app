@@ -11,12 +11,36 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:social_app/model/user_model.dart';
 
 class FeedsController extends GetxController {
-  late List<PostModel> postsList;
+  List<PostModel> postsList = [];
+
   late CollectionReference postCollection;
-  
+  String? userId = CacheHelper.prefs?.getString('userId');
   UserDataModel userDataModel = UserDataModel();
 
+  Future<void> addLike({required String postId}) async {
+    postCollection.doc(postId).collection('Likes').doc(userId).set({
+      'like': true,
+    });
+  }
 
+  bool isliked = false;
+  late int numLikes;
+  Future<void> getNumLikes({required String postId}) async {
+    postCollection.doc(postId).collection('Likes').get().then((value) {
+      value.docs.map((doc) {
+        if (doc.id == userId) {
+          isliked = true;
+        }
+      });
+
+      numLikes = value.docs.length;
+      
+    });
+  }
+
+  Future<void> removeLike({required String postId}) async {
+    postCollection.doc(postId).collection('Likes').doc(userId).delete();
+  }
 
   @override
   void onInit() {

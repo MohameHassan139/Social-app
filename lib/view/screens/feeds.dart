@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:social_app/model/post_model.dart';
 import '../../controller/feeds_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shimmer/shimmer.dart';
 
 class FeedsScreen extends StatelessWidget {
   FeedsScreen({Key? key}) : super(key: key);
@@ -15,74 +16,106 @@ class FeedsScreen extends StatelessWidget {
     height = MediaQuery.of(context).size.height;
 
     return StreamBuilder<QuerySnapshot>(
-        stream: controller.postCollection.snapshots() ,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            controller.postsList = snapshot.data!.docs.map((doc) {
-              final data = doc.data() as Map<String,
-                  dynamic>; // Extract data from _JsonQueryDocumentSnapshot
-              return PostModel.fromJson(data); // Convert data to PostModel
-            }).toList();
-            return SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  Stack(
-                    alignment: AlignmentDirectional.bottomEnd,
-                    children: [
-                      const Card(
-                        margin: EdgeInsets.all(8),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        elevation: 10,
-                        child: Image(
-                          image: NetworkImage(
-                              'https://media.istockphoto.com/photos/portrait-of-two-person-nice-cool-lovely-fascinating-fashionable-picture-id1134044843'),
-                          fit: BoxFit.cover,
-                          height: 200,
-                          width: double.infinity,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(13.0),
-                        child: Text(
-                          'communcation with friends',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.postsList.length,
-                    itemBuilder: (context, index) => postItem(context: context,postModel: controller.postsList[index] ),
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 10),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
-              ),
-            );
-          }
-          if (snapshot.hasError) {
-            return const Text("Something went wrong");
-          }
+      stream: controller.postCollection.snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          // controller.postsList = [];
+          snapshot.data!.docs.map((doc) {
+            controller.getNumLikes(postId: doc.id).then((value) {
 
-          if (!snapshot.hasData ) {
-            return const Text("Document does not exist");
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
+              final data = doc.data() as Map<String, dynamic>;
+              controller.postsList.add(PostModel.fromJson(
+                numLikes: controller.numLikes ,
+                json: data,
+                postId: doc.id,
+              ),
+              );
+              
+            });
+          });
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    const Card(
+                      margin: EdgeInsets.all(8),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      elevation: 10,
+                      child: Image(
+                        image: NetworkImage(
+                            'https://media.istockphoto.com/photos/portrait-of-two-person-nice-cool-lovely-fascinating-fashionable-picture-id1134044843'),
+                        fit: BoxFit.cover,
+                        height: 200,
+                        width: double.infinity,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(13.0),
+                      child: Text(
+                        'communcation with friends',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.postsList.length,
+                  itemBuilder: (context, index) => postItem(
+                      context: context, postModel: controller.postsList[index]),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
           );
-        });
+        }
+        if (snapshot.hasError) {
+          return const Text("Something went wrong");
+        }
+
+        if (snapshot.hasData == false) {
+          return const Text("Document does not exist");
+        }
+        return SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              stackWithShimmerPlaceholder(
+                height: 200,
+                theme: ThemeData.light(),
+              ),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 4,
+                itemBuilder: (context, index) {
+                  return postItemShimmerPlaceholder(
+                      theme: ThemeData.light(), height: height!);
+                },
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 10),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
-  Widget postItem({required BuildContext context, required PostModel postModel }) => Card(
+  Widget postItem(
+          {required BuildContext context, required PostModel postModel}) =>
+      Card(
         margin: const EdgeInsets.symmetric(horizontal: 8),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         elevation: 10,
@@ -93,7 +126,7 @@ class FeedsScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                   CircleAvatar(
+                  CircleAvatar(
                     radius: 25,
                     backgroundImage: NetworkImage(
                       '${postModel.image}',
@@ -158,11 +191,10 @@ class FeedsScreen extends StatelessWidget {
 
               //text
               if (postModel.text != null)
-              
-              Text(
-                '${postModel.text}',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+                Text(
+                  '${postModel.text}',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
 
               //  hashtag ###
               // Padding(
@@ -250,25 +282,39 @@ class FeedsScreen extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              if (postModel.postImage != null && postModel.text != null)
-                const SizedBox(height: 15,),
+              if (postModel.postImage != null && postModel.text != '')
+                const SizedBox(
+                  height: 15,
+                ),
               // post image
-              if(postModel.postImage != null)
-              Container(
-                
-                height: height! * 0.25,
-                width: double.infinity,
-                decoration: BoxDecoration(
+              if (postModel.postImage != null)
+                ClipRRect(
                   borderRadius: BorderRadius.circular(5),
-                  image:  DecorationImage(
-                    image: NetworkImage(
-                        postModel.postImage!,
-                        
-                    ),
-                    fit: BoxFit.cover,
+                  child: Image(
+                    image: NetworkImage(postModel.postImage!),
+                    width: double.infinity,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        // Image is fully loaded
+                        return child;
+                      } else {
+                        // Image is still loading, show shimmer effect as a placeholder
+                        return Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            width:
+                                double.infinity, // Adjust the width as needed
+                            height:
+                                height! * 0.25, // Adjust the height as needed
+                            color: Colors.white, // Optional background color
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ),
-              ),
 
               // likes and comment
               Padding(
@@ -351,10 +397,11 @@ class FeedsScreen extends StatelessWidget {
                       },
                       child: Row(
                         children: [
-                           CircleAvatar(
+                          CircleAvatar(
                             radius: 18,
                             backgroundImage: NetworkImage(
-                             controller.userDataModel.image?? 'https://th.bing.com/th/id/OIP.Duxe9oHXe7MDJwyr0J4d9QAAAA?pid=ImgDet&w=419&h=630&rs=1',
+                              controller.userDataModel.image ??
+                                  'https://th.bing.com/th/id/OIP.Duxe9oHXe7MDJwyr0J4d9QAAAA?pid=ImgDet&w=419&h=630&rs=1',
                             ),
                           ),
                           const SizedBox(
@@ -371,7 +418,7 @@ class FeedsScreen extends StatelessWidget {
 
                   InkWell(
                     onTap: () {
-                      //TODO
+                      controller.addLike(postId: postModel.postId!);
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
@@ -387,7 +434,7 @@ class FeedsScreen extends StatelessWidget {
                           ),
                           Text(
                             'Like',
-                            style: Theme.of(context).textTheme.caption,
+                            style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
                       ),
@@ -399,4 +446,443 @@ class FeedsScreen extends StatelessWidget {
           ),
         ),
       );
+}
+
+// Widget postItemShimmerPlaceholder({required double height}) {
+//   return Card(
+//     margin: const EdgeInsets.symmetric(horizontal: 8),
+//     clipBehavior: Clip.antiAliasWithSaveLayer,
+//     elevation: 10,
+//     child: Shimmer.fromColors(
+//       baseColor: Colors.grey[300]!,
+//       highlightColor: Colors.grey[100]!,
+//       child: Padding(
+//         padding: const EdgeInsets.all(10.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Row(
+//               children: [
+//                 const CircleAvatar(
+//                   radius: 25,
+//                   backgroundColor:
+//                       Colors.white, // Set a background color for the shimmer
+//                 ),
+//                 const SizedBox(width: 10),
+//                 Expanded(
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Row(
+//                         children: [
+//                           Container(
+//                             width: 100, // Set a fixed width for shimmer
+//                             height: 20, // Set a fixed height for shimmer
+//                             color: Colors
+//                                 .white, // Set a background color for the shimmer
+//                           ),
+//                           const SizedBox(width: 10),
+//                           const Icon(
+//                             Icons.verified,
+//                             color: AppColor.buttonColor,
+//                             size: 18,
+//                           )
+//                         ],
+//                       ),
+//                       Container(
+//                         width: 150, // Set a fixed width for shimmer
+//                         height: 16, // Set a fixed height for shimmer
+//                         color: Colors
+//                             .white, // Set a background color for the shimmer
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//                 const SizedBox(width: 10),
+//                 Container(
+//                   width: 30, // Set a fixed width for shimmer
+//                   height: 30, // Set a fixed height for shimmer
+//                   color: Colors.white, // Set a background color for the shimmer
+//                 ),
+//               ],
+//             ),
+//             // Divider
+//             Padding(
+//               padding: const EdgeInsets.symmetric(vertical: 15),
+//               child: Container(
+//                 width: double.infinity,
+//                 height: 1,
+//                 color: Colors.grey[600],
+//               ),
+//             ),
+//             Container(
+//               width: double.infinity,
+//               height: 16, // Set a fixed height for shimmer
+//               color: Colors.white, // Set a background color for the shimmer
+//             ),
+//             const SizedBox(height: 15),
+//             // Post image placeholder
+//             Container(
+//               width: double.infinity,
+//               height: height! * 0.25, // Adjust the height as needed
+//               color: Colors.white, // Set a background color for the shimmer
+//             ),
+//             // Likes and comment
+//             Padding(
+//               padding: const EdgeInsets.all(5),
+//               child: Row(
+//                 children: [
+//                   Expanded(
+//                     child: Padding(
+//                       padding: const EdgeInsets.symmetric(vertical: 5),
+//                       child: Row(
+//                         children: [
+//                           const Icon(
+//                             Icons.favorite_border,
+//                             color: Colors.red,
+//                             size: 18,
+//                           ),
+//                           const SizedBox(width: 5),
+//                           Container(
+//                             width: 30, // Set a fixed width for shimmer
+//                             height: 16, // Set a fixed height for shimmer
+//                             color: Colors
+//                                 .white, // Set a background color for the shimmer
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                   Expanded(
+//                     child: Padding(
+//                       padding: const EdgeInsets.symmetric(vertical: 5),
+//                       child: Row(
+//                         mainAxisAlignment: MainAxisAlignment.end,
+//                         children: [
+//                           const Icon(
+//                             Icons.chat_bubble_outline,
+//                             color: Colors.amber,
+//                             size: 18,
+//                           ),
+//                           const SizedBox(width: 5),
+//                           Container(
+//                             width: 60, // Set a fixed width for shimmer
+//                             height: 16, // Set a fixed height for shimmer
+//                             color: Colors
+//                                 .white, // Set a background color for the shimmer
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//             // Divider
+//             Padding(
+//               padding: const EdgeInsets.only(bottom: 10),
+//               child: Container(
+//                 width: double.infinity,
+//                 height: 1,
+//                 color: Colors.grey[600],
+//               ),
+//             ),
+//             // Write comment and like
+//             Row(
+//               children: [
+//                 Expanded(
+//                   child: InkWell(
+//                     onTap: () {
+//                       // TODO
+//                     },
+//                     child: Row(
+//                       children: [
+//                         const CircleAvatar(
+//                           radius: 18,
+//                           backgroundColor: Colors
+//                               .white, // Set a background color for the shimmer
+//                         ),
+//                         const SizedBox(width: 5),
+//                         Container(
+//                           width: 150, // Set a fixed width for shimmer
+//                           height: 16, // Set a fixed height for shimmer
+//                           color: Colors
+//                               .white, // Set a background color for the shimmer
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//                 InkWell(
+//                   onTap: () {
+//                     // TODO
+//                   },
+//                   child: Padding(
+//                     padding: const EdgeInsets.symmetric(vertical: 5),
+//                     child: Row(
+//                       children: [
+//                         const Icon(
+//                           Icons.favorite_border,
+//                           color: Colors.red,
+//                           size: 21,
+//                         ),
+//                         const SizedBox(width: 5),
+//                         Container(
+//                           width: 50, // Set a fixed width for shimmer
+//                           height: 16, // Set a fixed height for shimmer
+//                           color: Colors
+//                               .white, // Set a background color for the shimmer
+//                         ),
+//                       ],
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             )
+//           ],
+//         ),
+//       ),
+//     ),
+//   );
+// }
+Widget postItemShimmerPlaceholder({
+  required double height,
+  required ThemeData theme,
+}) {
+  final isDarkTheme = theme.brightness == Brightness.dark;
+
+  final baseColor = isDarkTheme ? Colors.grey[800]! : Colors.grey[300]!;
+  final highlightColor = isDarkTheme ? Colors.grey[600]! : Colors.grey[100]!;
+  final textColor = isDarkTheme ? Colors.grey[350] : Colors.black;
+  final iconColor = isDarkTheme ? Colors.grey : Colors.black;
+  final backgroundColor = isDarkTheme ? Colors.black : Colors.white;
+  final dividerColor = isDarkTheme ? Colors.grey[600] : Colors.grey[300];
+  final likeColor = isDarkTheme ? Colors.red : Colors.red;
+  final commentColor = isDarkTheme ? Colors.amber : Colors.amber;
+
+  return Card(
+    margin: const EdgeInsets.symmetric(horizontal: 8),
+    clipBehavior: Clip.antiAliasWithSaveLayer,
+    elevation: 10,
+    child: Shimmer.fromColors(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.white,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 20,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 10),
+                          const Icon(
+                            Icons.verified,
+                            size: 18,
+                          )
+                        ],
+                      ),
+                      Container(
+                        width: 150,
+                        height: 16,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Container(
+                  width: 30,
+                  height: 30,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Container(
+                width: double.infinity,
+                height: 1,
+                color: dividerColor,
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: 16,
+              color: Colors.white,
+            ),
+            const SizedBox(height: 15),
+            Container(
+              width: double.infinity,
+              height: height * 0.25,
+              color: Colors.white,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.favorite_border,
+                            size: 18,
+                            color: likeColor,
+                          ),
+                          const SizedBox(width: 5),
+                          Container(
+                            width: 30,
+                            height: 16,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.chat_bubble_outline,
+                            size: 18,
+                            color: commentColor,
+                          ),
+                          const SizedBox(width: 5),
+                          Container(
+                            width: 60,
+                            height: 16,
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                width: double.infinity,
+                height: 1,
+                color: dividerColor,
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      // TODO
+                    },
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.white,
+                        ),
+                        const SizedBox(width: 5),
+                        Container(
+                          width: 150,
+                          height: 16,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    // TODO
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.favorite_border,
+                          size: 21,
+                          color: likeColor,
+                        ),
+                        const SizedBox(width: 5),
+                        Container(
+                          width: 50,
+                          height: 16,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+Widget stackWithShimmerPlaceholder({
+  required double height,
+  required ThemeData theme,
+}) {
+  final isDarkTheme = theme.brightness == Brightness.dark;
+
+  final baseColor = isDarkTheme ? Colors.grey[800]! : Colors.grey[300]!;
+  final highlightColor = isDarkTheme ? Colors.grey[600]! : Colors.grey[100]!;
+  final containerColor = isDarkTheme ? Colors.black : Colors.white;
+  final dividerColor = isDarkTheme ? Colors.grey[600] : Colors.grey[300];
+
+  return Stack(
+    alignment: AlignmentDirectional.bottomEnd,
+    children: [
+      Card(
+        margin: EdgeInsets.all(8),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 10,
+        child: Shimmer.fromColors(
+          baseColor: baseColor,
+          highlightColor: highlightColor,
+          child: Container(
+            width: double.infinity,
+            height: height,
+            color: containerColor,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(13.0),
+        child: Shimmer.fromColors(
+          baseColor: baseColor,
+          highlightColor: highlightColor,
+          child: Container(
+            width: 130,
+            height: 15,
+            color: dividerColor,
+          ),
+        ),
+      ),
+    ],
+  );
 }
