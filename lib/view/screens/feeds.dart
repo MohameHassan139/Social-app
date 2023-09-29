@@ -15,78 +15,133 @@ class FeedsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: controller.postCollection.snapshots(),
+    return FutureBuilder<allPosts>(
+      future: controller.getPosts().then((value) async {
+        // await value.getLikes();
+        return  value;
+      }),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          // controller.postsList = [];
-          snapshot.data!.docs.map((doc) {
-            controller.getNumLikes(postId: doc.id).then((value) {
+//           final postDocs = snapshot.data!.docs;
+// final data = postDocs as Map<String, dynamic>;
+//           final postModel = PostModel.fromJson(json: data, postId: doc.id);
+//           controller.postsList.add(postModel);
+//       // Create a list to store the PostModel instances
+//       for (var doc in postDocs) {
+//         WidgetsFlutterBinding.ensureInitialized();
+//         // Call getNumLikes and wait for it to complete
+//          controller.getNumLikes(postId: doc.id).then((value) {
 
-              final data = doc.data() as Map<String, dynamic>;
-              controller.postsList.add(PostModel.fromJson(
-                numLikes: controller.numLikes ,
-                json: data,
-                postId: doc.id,
-              ),
-              );
-              
-            });
-          });
-          return SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                Stack(
-                  alignment: AlignmentDirectional.bottomEnd,
+//          });
+
+//       }
+          // final postDocs = snapshot.data!.docs;
+          // for (var doc in postDocs) {
+          //   WidgetsFlutterBinding.ensureInitialized();
+          //   controller.getNumLikes(postId: doc.id);
+
+          // }
+
+          // controller.postsList = snapshot.data!.docs.map((doc) {
+
+          //   final data = doc.data() as Map<String,
+          //       dynamic>; // Extract data from _JsonQueryDocumentSnapshot
+          //   return PostModel.fromJson(
+          //       json: data, postId: doc.id); // Convert data to PostModel
+          // }).toList();
+
+          controller.postsList = snapshot.data!;
+          return RefreshIndicator(
+            onRefresh: () async {
+              controller.postsList = await controller.getPosts();
+            },
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: GetBuilder<FeedsController>(builder: (c) {
+                return Column(
                   children: [
-                    const Card(
-                      margin: EdgeInsets.all(8),
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      elevation: 10,
-                      child: Image(
-                        image: NetworkImage(
-                            'https://media.istockphoto.com/photos/portrait-of-two-person-nice-cool-lovely-fascinating-fashionable-picture-id1134044843'),
-                        fit: BoxFit.cover,
-                        height: 200,
-                        width: double.infinity,
-                      ),
+                    Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: [
+                        Card(
+                          margin: EdgeInsets.all(8),
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          elevation: 10,
+                          child: Image(
+                            errorBuilder: (context, error, stackTrace) =>
+                                Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Container(
+                                width: double
+                                    .infinity, // Adjust the width as needed
+                                height: height! *
+                                    0.25, // Adjust the height as needed
+                                color:
+                                    Colors.white, // Optional background color
+                              ),
+                            ),
+                           
+                            image: NetworkImage(
+                                'https://media.istockphoto.com/photos/portrait-of-two-person-nice-cool-lovely-fascinating-fashionable-picture-id1134044843'),
+                            fit: BoxFit.cover,
+                            height: 200,
+                            width: double.infinity,
+                            // loadingBuilder: (context, child, loadingProgress) =>
+                            //     Shimmer.fromColors(
+                            //   baseColor: Colors.grey[300]!,
+                            //   highlightColor: Colors.grey[100]!,
+                            //   child: Container(
+                            //     width: double
+                            //         .infinity, // Adjust the width as needed
+                            //     height: height! *
+                            //         0.25, // Adjust the height as needed
+                            //     color:
+                            //         Colors.white, // Optional background color
+                            //   ),
+                            // ),
+                          
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(13.0),
+                          child: Text(
+                            'communcation with friends',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.white),
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(13.0),
-                      child: Text(
-                        'communcation with friends',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: Colors.white),
-                      ),
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.postsList.posts!.length ?? 0,
+                      itemBuilder: (context, index) => postItem(
+                          context: context,
+                          postModel: controller.postsList.posts![index],
+                          index: index),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 10),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                   ],
-                ),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.postsList.length,
-                  itemBuilder: (context, index) => postItem(
-                      context: context, postModel: controller.postsList[index]),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 10),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
+                );
+              }),
             ),
           );
         }
         if (snapshot.hasError) {
-          return const Text("Something went wrong");
+          return Text("${snapshot.error.toString()} kjk");
         }
 
-        if (snapshot.hasData == false) {
-          return const Text("Document does not exist");
-        }
+        // if (snapshot.hasData == false) {
+        //   return const Text("Document does not exist");
+        // }
         return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
@@ -114,7 +169,9 @@ class FeedsScreen extends StatelessWidget {
   }
 
   Widget postItem(
-          {required BuildContext context, required PostModel postModel}) =>
+          {required BuildContext context,
+          required PostModel postModel,
+          required int index}) =>
       Card(
         margin: const EdgeInsets.symmetric(horizontal: 8),
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -291,6 +348,16 @@ class FeedsScreen extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: Image(
+                    errorBuilder: (context, error, stackTrace) =>
+                        Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(
+                        width: double.infinity, // Adjust the width as needed
+                        height: height! * 0.25, // Adjust the height as needed
+                        color: Colors.white, // Optional background color
+                      ),
+                    ),
                     image: NetworkImage(postModel.postImage!),
                     width: double.infinity,
                     loadingBuilder: (BuildContext context, Widget child,
@@ -416,27 +483,58 @@ class FeedsScreen extends StatelessWidget {
                     ),
                   ),
 
-                  InkWell(
-                    onTap: () {
-                      controller.addLike(postId: postModel.postId!);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.heart_broken_outlined,
-                            color: Colors.red,
-                            size: 21,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            'Like',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        ],
+                  Visibility(
+                    visible: true,
+                    replacement: InkWell(
+                      onTap: () {
+                        controller.addLike(postId: postModel.postId!);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.heart_broken_outlined,
+                              color: Colors.red,
+                              size: 21,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'Like',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        controller
+                            .removeLike(postId: postModel.postId!)
+                            .then((value) {
+                          // controller.isliked[index] = false;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.heart_broken,
+                              color: Colors.red,
+                              size: 21,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              'Like',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -11,41 +11,60 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:social_app/model/user_model.dart';
 
 class FeedsController extends GetxController {
-  List<PostModel> postsList = [];
+  late allPosts postsList;
 
   late CollectionReference postCollection;
   String? userId = CacheHelper.prefs?.getString('userId');
   UserDataModel userDataModel = UserDataModel();
 
+  Future<allPosts> getPosts() async {
+    print('e as Map<String, dynamic>');
+
+    QuerySnapshot<Object?> posts;
+    posts = await postCollection.get().then((value) {
+      return value;
+    });
+    update();
+
+    return  allPosts.fromJson(posts);
+  }
+
   Future<void> addLike({required String postId}) async {
     postCollection.doc(postId).collection('Likes').doc(userId).set({
       'like': true,
+    }).then((value) {
+      update();
     });
   }
 
-  bool isliked = false;
-  late int numLikes;
+  List<bool> isliked = [];
+  List<int> numLikes = [];
+
   Future<void> getNumLikes({required String postId}) async {
     postCollection.doc(postId).collection('Likes').get().then((value) {
+      bool flag = false;
       value.docs.map((doc) {
         if (doc.id == userId) {
-          isliked = true;
+          flag = true;
         }
       });
-
-      numLikes = value.docs.length;
-      
+      isliked.add(flag);
+      numLikes.add(value.docs.length ?? 0);
+      print('@@@@@@@@@@@@@@@@@@@@@@@@@');
+      print(value.docs.length);
+      print(flag);
+      update();
     });
   }
 
   Future<void> removeLike({required String postId}) async {
     postCollection.doc(postId).collection('Likes').doc(userId).delete();
+    update();
   }
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     postCollection = FirebaseFirestore.instance.collection('posts');
-
     super.onInit();
   }
 }
