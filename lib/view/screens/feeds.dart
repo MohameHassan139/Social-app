@@ -16,10 +16,7 @@ class FeedsScreen extends StatelessWidget {
     height = MediaQuery.of(context).size.height;
 
     return FutureBuilder<allPosts>(
-      future: controller.getPosts().then((value) async {
-        // await value.getLikes();
-        return  value;
-      }),
+      future: controller.getPosts(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
 //           final postDocs = snapshot.data!.docs;

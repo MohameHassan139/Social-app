@@ -5,6 +5,7 @@ class CacheHelper {
 
   static init() async {
     prefs = await SharedPreferences.getInstance();
+    
   }
 
   static testSharedPreferences() async {

@@ -7,7 +7,7 @@ class allPosts {
   QuerySnapshot<Object?> json;
   allPosts.fromJson(this.json)  {
     
-    getLikes().then((value) {
+    
       posts = List<PostModel>.from(
         json.docs.map(
           (x) => PostModel.fromJson(
@@ -16,7 +16,7 @@ class allPosts {
           ),
         ),
       );
-    });
+   
     
   }
 

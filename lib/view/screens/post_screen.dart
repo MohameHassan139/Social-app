@@ -67,6 +67,7 @@ class CreatePostScreen extends StatelessWidget {
                   ),
                 ],
               ),
+             
               Expanded(
                 child: TextField(
                   controller: controller.postController,

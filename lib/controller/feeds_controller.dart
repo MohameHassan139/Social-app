@@ -18,13 +18,15 @@ class FeedsController extends GetxController {
   UserDataModel userDataModel = UserDataModel();
 
   Future<allPosts> getPosts() async {
-    print('e as Map<String, dynamic>');
+    
 
     QuerySnapshot<Object?> posts;
     posts = await postCollection.get().then((value) {
+      update();
       return value;
+      
     });
-    update();
+    
 
     return  allPosts.fromJson(posts);
   }

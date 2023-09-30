@@ -1,3 +1,5 @@
+
+
 class UserDataModel {
   // Private constructor
   UserDataModel._();
@@ -37,9 +39,6 @@ class UserDataModel {
   }
 }
 
-
-
-
 class CreateUserModel {
   CreateUserModel({
     this.name,
@@ -58,7 +57,6 @@ class CreateUserModel {
   String? phone;
   String? bio = 'write a bio';
   String? caver;
- 
 
   Map<String, dynamic> toJson() {
     return {
