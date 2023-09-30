@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:social_app/constants/app_routes.dart';
+import 'package:social_app/helper/cashe_helper.dart';
 import '../../controller/profile_controller.dart';
 import '../../model/user_model.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // import 'edit_profile_screen.dart';
-
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({key});
@@ -19,7 +19,8 @@ class ProfileScreen extends StatelessWidget {
         if (snapshot.hasData) {
           controller.model = UserDataModel.fromJson(
               snapshot.data!.data() as Map<String, dynamic>);
-
+          CacheHelper.addUserDataToPrefs(userModel: controller.model);
+          CacheHelper.getUserDataFromPrefs();
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -102,7 +103,7 @@ class ProfileScreen extends StatelessWidget {
                                 '100',
                                 style: Theme.of(context).textTheme.subtitle2,
                               ),
-                                const SizedBox(
+                              const SizedBox(
                                 height: 7,
                               ),
                               Text(
@@ -200,7 +201,6 @@ class ProfileScreen extends StatelessWidget {
                       height: 35,
                       child: OutlinedButton(
                         onPressed: () {
-
                           Get.toNamed(AppRoutes.editeProfile);
                           // Get.to(() =>EditeProfile());
                         },
@@ -227,12 +227,3 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-

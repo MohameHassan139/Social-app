@@ -15,38 +15,10 @@ class FeedsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
 
-    return FutureBuilder<allPosts>(
+    return FutureBuilder<AllPosts>(
       future: controller.getPosts(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-//           final postDocs = snapshot.data!.docs;
-// final data = postDocs as Map<String, dynamic>;
-//           final postModel = PostModel.fromJson(json: data, postId: doc.id);
-//           controller.postsList.add(postModel);
-//       // Create a list to store the PostModel instances
-//       for (var doc in postDocs) {
-//         WidgetsFlutterBinding.ensureInitialized();
-//         // Call getNumLikes and wait for it to complete
-//          controller.getNumLikes(postId: doc.id).then((value) {
-
-//          });
-
-//       }
-          // final postDocs = snapshot.data!.docs;
-          // for (var doc in postDocs) {
-          //   WidgetsFlutterBinding.ensureInitialized();
-          //   controller.getNumLikes(postId: doc.id);
-
-          // }
-
-          // controller.postsList = snapshot.data!.docs.map((doc) {
-
-          //   final data = doc.data() as Map<String,
-          //       dynamic>; // Extract data from _JsonQueryDocumentSnapshot
-          //   return PostModel.fromJson(
-          //       json: data, postId: doc.id); // Convert data to PostModel
-          // }).toList();
-
           controller.postsList = snapshot.data!;
           return RefreshIndicator(
             onRefresh: () async {
@@ -78,7 +50,7 @@ class FeedsScreen extends StatelessWidget {
                                     Colors.white, // Optional background color
                               ),
                             ),
-                           
+
                             image: NetworkImage(
                                 'https://media.istockphoto.com/photos/portrait-of-two-person-nice-cool-lovely-fascinating-fashionable-picture-id1134044843'),
                             fit: BoxFit.cover,
@@ -97,7 +69,6 @@ class FeedsScreen extends StatelessWidget {
                             //         Colors.white, // Optional background color
                             //   ),
                             // ),
-                          
                           ),
                         ),
                         Padding(
@@ -197,6 +168,7 @@ class FeedsScreen extends StatelessWidget {
                           children: [
                             Text(
                               '${postModel.name}',
+                              overflow: TextOverflow.ellipsis,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -207,11 +179,11 @@ class FeedsScreen extends StatelessWidget {
                             const SizedBox(
                               width: 10,
                             ),
-                            const Icon(
-                              Icons.verified,
-                              color: AppColor.buttonColor,
-                              size: 18,
-                            )
+                            // const Icon(
+                            //   Icons.verified,
+                            //   color: AppColor.buttonColor,
+                            //   size: 18,
+                            // )
                           ],
                         ),
                         Text(
@@ -481,10 +453,11 @@ class FeedsScreen extends StatelessWidget {
                   ),
 
                   Visibility(
-                    visible: true,
+                    visible: controller.isliked[index],
                     replacement: InkWell(
                       onTap: () {
                         controller.addLike(postId: postModel.postId!);
+                        controller.isliked[index] = true;
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -508,11 +481,9 @@ class FeedsScreen extends StatelessWidget {
                     ),
                     child: InkWell(
                       onTap: () {
-                        controller
-                            .removeLike(postId: postModel.postId!)
-                            .then((value) {
-                          // controller.isliked[index] = false;
-                        });
+                        controller.removeLike(postId: postModel.postId!);
+
+                        controller.isliked[index] = false;
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),

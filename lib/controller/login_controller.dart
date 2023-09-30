@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:social_app/constants/const.dart';
 import 'package:social_app/helper/cashe_helper.dart';
-
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../constants/app_routes.dart';
+import '../model/user_model.dart';
 import '../view/widgets/toast.dart';
 
 class LoginController extends GetxController {
@@ -34,7 +36,10 @@ class LoginController extends GetxController {
         update();
       } else {
         CacheHelper.prefs?.setString('userId', uesrId!);
-        Get.offNamed(AppRoutes.home);
+        getUserData().then((value) {
+          Get.offNamed(AppRoutes.home);
+        });
+
         // toast(msg: 'login sccess', color: Colors.green);
       }
       update();
@@ -57,5 +62,17 @@ class LoginController extends GetxController {
       icon = Icons.remove_red_eye;
     }
     update();
+  }
+
+  Future<void> getUserData() async {
+    CollectionReference user = FirebaseFirestore.instance.collection('users');
+    await user.doc(uesrId).get().then((value) {
+      UserDataModel userModel =
+          UserDataModel.fromJson(value.data() as Map<String, dynamic>);
+      print('get user data');
+      CacheHelper.addUserDataToPrefs(userModel: userModel).then((value) {});
+
+      update();
+    });
   }
 }

@@ -13,13 +13,16 @@ class HomeScreen extends StatelessWidget {
       builder: (c) => Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(onPressed: (){
-              // TODO
-            }, icon: const Icon(
-              Icons.notifications_active_rounded,
-              color: AppColor.buttonColor,
-              ),),
-              IconButton(
+            IconButton(
+              onPressed: () {
+                // TODO
+              },
+              icon: const Icon(
+                Icons.notifications_active_rounded,
+                color: AppColor.buttonColor,
+              ),
+            ),
+            IconButton(
               onPressed: () {
                 // TODO
               },
@@ -30,11 +33,7 @@ class HomeScreen extends StatelessWidget {
           ],
           title: Text(controller.title[controller.currentIndex]),
         ),
-        
-        body: 
-        !controller.stateGetUserData?
-        controller.screens[controller.currentIndex]:Center(child: CupertinoActivityIndicator(radius: 15),),
-
+        body: controller.screens[controller.currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
@@ -45,7 +44,7 @@ class HomeScreen extends StatelessWidget {
               icon: Icon(Icons.message_sharp),
               label: 'chat',
             ),
-             BottomNavigationBarItem(
+            BottomNavigationBarItem(
               icon: Icon(Icons.upload_file),
               label: 'add post',
             ),
